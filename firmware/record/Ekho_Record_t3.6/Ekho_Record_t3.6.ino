@@ -5,6 +5,12 @@
 #include <RingBuffer.h>
 #include <RingBufferDMA.h>
 
+
+#define NO_POT_METER
+#if 0
+#define MONITOR
+#endif
+
 #define AD5282_ADDRESS 0b0101100
 #define AD5282_RDAC1 0b00000000
 #define AD5282_RDAC2 0b10000000
@@ -13,6 +19,10 @@ uint16_t current, voltage;
 byte response[6];
 
 void set_rdac(uint8_t num, uint8_t val) {
+#ifdef NO_POT_METER
+  delayMicroseconds(50);
+  return;
+#endif
   Wire.beginTransmission(AD5282_ADDRESS);
   Wire.write(num);            
   Wire.write(val);             
@@ -59,10 +69,13 @@ void loop() {
   response[3] = (byte) (voltage >> 8) & 0xff;    
   response[4] = 0xFF;
   response[5] = 0xFF;
+#ifndef MONITOR
   Serial.write(response, 6);    
-  //Serial.print(voltage);
-  //Serial.print(",");
-  //Serial.println(current);
+#else
+  Serial.print(voltage);
+  Serial.print(",");
+  Serial.println(current);
+#endif
   
   set_rdac(AD5282_RDAC1, index_smart);
   set_rdac(AD5282_RDAC2, index_smart++);

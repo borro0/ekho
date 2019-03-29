@@ -3,9 +3,9 @@
 	$ brew install Gsl
 */
 
-#include <OpenGL/gl.h>
-#include <OpenGL/glu.h>
-#include <GLUT/glut.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 // This makes PRIu64 work in printf
 #define __STDC_FORMAT_MACROS 
 #include <inttypes.h>
@@ -19,8 +19,8 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <gsl/gsl_multifit.h>
-#include <mach/mach.h>
-#include <mach/mach_time.h>
+// #include <mach.h>
+// #include <mach/mach_time.h>
 #include "Vector.h"
 
 
@@ -34,7 +34,7 @@ using namespace std;
 #define DEGREE 5
 #define RESISTANCE 410
 #define DAC_DIVISION 2.5
-#define SHOW_PROGRESS 1
+#define SHOW_PROGRESS 0
 
 unsigned char buf[8];
 int port;
@@ -290,10 +290,13 @@ void timer(int unused)
 void init_serial(int argc, char **argv) {
 	struct termios settings;
 
+	printf("port value: %i \n", port);
+
 	// Open the serial port
 	port = open(argv[1], O_RDWR);
 	if (port < 0) {
-		fprintf(stderr, "Unable to open %s\n", argv[1]);
+		printf("port value: %i \n", port);
+		fprintf(stderr, "Unable to open port: %i \n", port);
 		exit(0);
 	}
 

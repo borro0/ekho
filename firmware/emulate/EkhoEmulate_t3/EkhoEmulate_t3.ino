@@ -28,11 +28,11 @@ void setup() {
 	pinMode(A3, INPUT);
 	pinMode(statPin, OUTPUT);
 
-	////// ADC1 /////
-	adc->setAveraging(1, ADC_1); // set number of averages
-	adc->setResolution(12, ADC_1); // set bits of resolution
-	adc->setConversionSpeed(ADC_HIGH_SPEED, ADC_1); // change the conversion speed
-	adc->setSamplingSpeed(ADC_HIGH_SPEED, ADC_1); // change the sampling speed
+	////// ADC0 /////
+  adc->setAveraging(1); // set number of averages
+  adc->setResolution(12); // set bits of resolution
+  adc->setConversionSpeed(ADC_CONVERSION_SPEED::HIGH_SPEED); // change the conversion speed 
+  adc->setSamplingSpeed(ADC_SAMPLING_SPEED::HIGH_SPEED); // change the sampling speed
 
 	// 12-bit DAC
 	analogWriteResolution(12); 
@@ -44,7 +44,7 @@ void setup() {
 
 void loop() {
 	// Calculate output value (TODO: dont use float math, use a table)
-	voltage = adc->analogRead(A3, ADC_1);
+	voltage = adc->analogRead(A1, ADC_0);
 	//					  = voltage * (3.3 / 4096) * 4;
 	double actual_voltage = voltage * 0.00322265;
 	double actual_voltage_digital = actual_voltage / 0.0019178;
@@ -67,8 +67,5 @@ void loop() {
 	}
 
 	// Write to DAC
-	analogWrite(A14, interpolate_f(avd, 6));
+	analogWrite(A21, interpolate_f(avd, 6));
 }
-
-
-
