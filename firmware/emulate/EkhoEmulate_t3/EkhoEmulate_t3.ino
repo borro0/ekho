@@ -44,7 +44,7 @@ void setup() {
 
 void loop() {
 	// Calculate output value (TODO: dont use float math, use a table)
-	voltage = adc->analogRead(A1, ADC_0);
+//	voltage = adc->analogRead(A1, ADC_0);/
 	//					  = voltage * (3.3 / 4096) * 4;
 	double actual_voltage = voltage * 0.00322265;
 	double actual_voltage_digital = actual_voltage / 0.0019178;
@@ -68,4 +68,5 @@ void loop() {
 
 	// Write to DAC
 	analogWrite(A21, interpolate_f(avd, 6));
+
 }
